@@ -533,7 +533,7 @@
             </div>
 
 
-            <#include "/inc/right.ftl"/>
+            <#include "/inc/right.ftl" />
         </div>
     </div>
 </@layout>

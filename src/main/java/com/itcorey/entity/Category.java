@@ -1,17 +1,16 @@
 package com.itcorey.entity;
 
-import com.itcorey.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
- * @author 公众号：徐买狼
- * @since 2020-11-10
+ * @author 公众号：徐卖狼
+ * @since 2020-09-07
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

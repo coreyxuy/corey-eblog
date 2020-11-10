@@ -25,11 +25,6 @@ public class SysOrganizations extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 企业id
-     */
-    @TableId(value = "ID", type = IdType.AUTO)
-    private Integer id;
 
     /**
      * 企业法人

@@ -22,6 +22,8 @@ public class PostController extends BaseController {
 
     @GetMapping("/category/{id:\\d*}")
     public String category(@PathVariable(name = "id") Long id) {
+
+        req.setAttribute("currentCategoryId", id);
         return "post/category";
     }
 

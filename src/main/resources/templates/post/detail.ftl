@@ -1,9 +1,7 @@
 <#include "/inc/layout.ftl" />
 
 <@layout "博客分类">
-
     <#include "/inc/header-panel.ftl"/>
-
     <div class="layui-container">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md8 content detail">

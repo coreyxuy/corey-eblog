@@ -1,8 +1,6 @@
 <#include "/inc/layout.ftl" />
 <@layout "首页">
-
     <#include "/inc/header-panel.ftl"/>
-
     <div class="layui-container">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md8">
@@ -162,7 +160,7 @@
           </span>
                     </div>
                     <ul class="fly-list">
-                        <#list  pageDate.records as post>
+                        <#list  pageData.records as post>
                             <li>
                                 <a href="/user/${post.authorId}" class="fly-avatar">
                                     <img src="${post.authorAvatar}" alt="${post.authorName}">
@@ -176,10 +174,8 @@
                                         <cite>${post.authorName}</cite>
                                     </a>
                                     <span>${post.created?string("yyyy-MM-dd")}</span>
-
-                                    <span class="fly-list-nums">
-                <i class="iconfont icon-pinglun1" title="回答"></i>${post.commentCount}
-              </span>
+                                    <span class="fly-list-nums"> <i class="iconfont icon-pinglun1"
+                                                                    title="回答"></i>${post.commentCount}  </span>
                                 </div>
                                 <div class="fly-list-badge">
                                     <!--<span class="layui-badge layui-bg-red">精帖</span>-->
@@ -187,16 +183,9 @@
                             </li>
                         </#list>
                     </ul>
-                    <div style="text-align: center">
-                        <div class="laypage-main">
-                            <a href="jie/index.html" class="laypage-next">更多求解</a>
-                        </div>
-                    </div>
-
+                    <@paging pageData></@paging>
                 </div>
             </div>
-
-
             <#include "/inc/right.ftl" />
         </div>
     </div>

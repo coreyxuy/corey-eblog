@@ -1,10 +1,10 @@
 <div class="fly-panel fly-column">
     <div class="layui-container">
         <ul class="layui-clear">
-            <li class="layui-hide-xs layui-this"><a href="/">首页</a></li>
+            <li class="${(0 == currentCategoryId)?string('layui-hide-xs layui-this', '')}"><a href="/">首页</a></li>
 
             <#list categorys as item>
-                <li><a href="/category/${item.id}">${item.name}</a></li>
+                <li class="${(item.id == currentCategoryId)?string('layui-hide-xs layui-this', '')}"><a href="/category/${item.id}">${item.name}</a></li>
             </#list>
 
 

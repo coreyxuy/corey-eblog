@@ -44,4 +44,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public PostVo selectOnePost(QueryWrapper<Post> wrapper) {
         return postMapper.selectOnePosts(wrapper);
     }
+
+
+    @Override
+    public void initWeekRank() {
+
+    }
 }

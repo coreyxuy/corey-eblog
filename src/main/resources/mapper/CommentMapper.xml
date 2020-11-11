@@ -6,14 +6,12 @@
     <select id="selectComments" resultType="com.itcorey.vo.CommentVo">
          SELECT
             c.*,
-
             u.id AS authorId,
             u.username AS authorName,
             u.avatar AS authorAvatar
         FROM
             comment c
         LEFT JOIN user u ON c.user_id = u.id
-
         ${ew.customSqlSegment}
 
     </select>

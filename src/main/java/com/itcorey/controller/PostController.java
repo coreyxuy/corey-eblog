@@ -35,14 +35,14 @@ public class PostController extends BaseController {
 
     @GetMapping("/post/{id:\\d*}")
     public String detail(@PathVariable(name = "id") Long id) {
-        PostVo vo = postService.selectOnePost(new QueryWrapper<Post>().eq("p.id",id));
-        Assert.notNull(vo,"文章已被删除！");
-
+        PostVo vo = postService.selectOnePost(new QueryWrapper<Post>().eq("p.id", id));
+        Assert.notNull(vo, "文章已被删除");
         // 1分页，2文章id，3用户id，排序
         IPage<CommentVo> results = commentService.paing(getPage(), vo.getId(), null, "created");
+
         req.setAttribute("currentCategoryId", vo.getCategoryId());
-        req.setAttribute("pageDate", results);
         req.setAttribute("post", vo);
+        req.setAttribute("pageData", results);
         return "post/detail";
     }
 }

@@ -3,6 +3,7 @@ package com.itcorey.config;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itcorey.entity.Category;
 import com.itcorey.service.CategoryService;
+import com.itcorey.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,6 +26,9 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
 
     ServletContext servletContext;
 
+    @Autowired
+    PostService postService;
+
 
     @Override
     public void run(ApplicationArguments args) {
@@ -32,6 +36,8 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
                 .eq("status", 0)
         );
         servletContext.setAttribute("categorys", categories);
+        //Redis 启动缓存加载
+        postService.initWeekRank();
     }
 
     @Override

@@ -21,5 +21,6 @@ public interface PostMapper extends BaseMapper<Post> {
 
     IPage<PostVo> selectPosts(Page page, @Param(Constants.WRAPPER) QueryWrapper wrapper);
 
-
+    //查询文章详情
+    PostVo selectOnePosts(@Param(Constants.WRAPPER) QueryWrapper<Post> wrapper);
 }

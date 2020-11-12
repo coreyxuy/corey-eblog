@@ -12,7 +12,9 @@ spring:
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
   redis:
-    host: localhost
+    host: 172.20.10.8
     port: 6379
     password:
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
 

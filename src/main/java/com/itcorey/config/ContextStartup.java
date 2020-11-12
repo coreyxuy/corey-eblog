@@ -29,20 +29,20 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     @Autowired
     PostService postService;
 
-
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws Exception {
+
         List<Category> categories = categoryService.list(new QueryWrapper<Category>()
                 .eq("status", 0)
         );
         servletContext.setAttribute("categorys", categories);
-        //Redis 启动缓存加载
         postService.initWeekRank();
+        System.out.println("redis server started...");
     }
 
     @Override
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
-
 }
+

@@ -1,21 +1,18 @@
 # DataSource Config
 spring:
   datasource:
-    driver-class-name:  com.p6spy.engine.spy.P6SpyDriver
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     url: jdbc:p6spy:mysql://localhost:3306/eblog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: 123456
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/**Mapper.xml
-
-freemarker:
-    template-loader-path: classpath:/templates/
-    cache: false
-    charset: UTF-8
-    check-template-location: true
-    content-type: text/html; charset=utf-8
-    expose-request-attributes: true
-    expose-session-attributes: true
-    request-context-attribute: request
-
+  freemarker:
+    settings:
+      classic_compatible: true
+      datetime_format: yyyy-MM-dd HH:mm
+      number_format: 0.##
+  redis:
+    host: localhost
+    port: 6379
+    password:
 

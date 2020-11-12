@@ -13,6 +13,7 @@ import com.itcorey.service.PostService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itcorey.utils.RedisUtil;
 import com.itcorey.vo.PostVo;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -89,15 +90,16 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     }
 
+
     /**
      * 本周合并每日评论数量操作
      */
     private void zunionAndStoreLast7DayForWeekRank() {
-        String  currentKey = "day:rank:" + DateUtil.format(new Date(), DatePattern.PURE_DATE_FORMAT);
+        String currentKey = "day:rank:" + DateUtil.format(new Date(), DatePattern.PURE_DATE_FORMAT);
 
         String destKey = "week:rank";
         List<String> otherKeys = new ArrayList<>();
-        for(int i=-6; i < 0; i++) {
+        for (int i = -6; i < 0; i++) {
             String temp = "day:rank:" +
                     DateUtil.format(DateUtil.offsetDay(new Date(), i), DatePattern.PURE_DATE_FORMAT);
 
@@ -109,17 +111,58 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     /**
      * 缓存文章的基本信息
+     *
      * @param post
      * @param expireTime
      */
     private void hashCachePostIdAndTitle(Post post, long expireTime) {
         String key = "rank:post:" + post.getId();
         boolean hasKey = redisUtil.hasKey(key);
-        if(!hasKey) {
+        if (!hasKey) {
             redisUtil.hset(key, "post:id", post.getId(), expireTime);
             redisUtil.hset(key, "post:title", post.getTitle(), expireTime);
             redisUtil.hset(key, "post:commentCount", post.getCommentCount(), expireTime);
             redisUtil.hset(key, "post:viewCount", post.getViewCount(), expireTime);
         }
+    }
+
+    /**
+     * 操作评论
+     *
+     * @param postId
+     * @param isIncr
+     */
+    @Override
+    public void incrCommentCountAndUnionForWeekRank(long postId, boolean isIncr) {
+        String currentKey = "day:rank:" + DateUtil.format(new Date(), DatePattern.PURE_DATE_FORMAT);
+        redisUtil.zIncrementScore(currentKey, postId, isIncr ? 1 : -1);
+
+        Post post = this.getById(postId);
+
+        // 7天后自动过期(15号发表，7-（18-15）=4)
+        long between = DateUtil.between(new Date(), post.getCreated(), DateUnit.DAY);
+        long expireTime = (7 - between) * 24 * 60 * 60; // 有效时间
+
+        //缓存这篇文章的基本信息
+        this.hashCachePostIdAndTitle(post, expireTime);
+
+        //重新操作做并集
+        this.zunionAndStoreLast7DayForWeekRank();
+    }
+
+
+    @Override
+    public void putViewCount(PostVo vo) {
+        String key = "rank:post" + vo.getId();
+        //1.从缓存中获取viewcount
+        Integer viewCount = (Integer) redisUtil.hget(key, "post:viewCount");
+        //如果缓存中没有，就先从实体类中获取，再加一
+        if (viewCount != null) {
+            vo.setViewCount(viewCount + 1);
+        } else {
+            vo.setViewCount(vo.getViewCount() + 1);
+        }
+        //同步到缓存
+        redisUtil.hset(key, "post:viewCount", vo.getViewCount());
     }
 }

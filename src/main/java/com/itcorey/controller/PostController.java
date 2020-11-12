@@ -37,6 +37,10 @@ public class PostController extends BaseController {
     public String detail(@PathVariable(name = "id") Long id) {
         PostVo vo = postService.selectOnePost(new QueryWrapper<Post>().eq("p.id", id));
         Assert.notNull(vo, "文章已被删除");
+
+        //保存文章阅读量操作
+        postService.putViewCount(vo);
+
         // 1分页，2文章id，3用户id，排序
         IPage<CommentVo> results = commentService.paing(getPage(), vo.getId(), null, "created");
 
